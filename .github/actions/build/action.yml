@@ -1,0 +1,12 @@
+name: "Test Python App"
+description: "Run tests for the Python app on specified environment"
+inputs:
+  environment:
+    description: 'Environment to test'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Run tests
+      run: echo "Running tests for ${{ inputs.environment }}"
+      shell: cmd
