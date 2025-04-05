@@ -14,19 +14,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Change to working directory
+    - name: Go to working directory
       run: cd ${{ inputs.working-dir }}
       shell: cmd
 
-    - name: Add pm2 to PATH
-      run: set PATH=C:\Users\marku\AppData\Roaming\npm;%PATH%
-      shell: cmd
-
-    - name: Echo deployment info
-      run: echo "Deploying to ${{ inputs.env-name }} on port ${{ inputs.port }}"
-      shell: cmd
-
-    - name: Start app with pm2
-      run: pm2 start app.py --name greetings-app-${{ inputs.env-name }} --interpreter python -- --port ${{ inputs.port }}
+    - name: Deploy with PM2
+      run: |
+        set PATH=C:\Users\marku\AppData\Roaming\npm;%PATH%
+        echo Deploying to ${{ inputs.env-name }} on port ${{ inputs.port }}
+        pm2 start app.py --name greetings-app-${{ inputs.env-name }} --interpreter python -- --port ${{ inputs.port }}
       working-directory: ${{ inputs.working-dir }}
       shell: cmd
