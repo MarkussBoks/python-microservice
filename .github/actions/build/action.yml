@@ -1,9 +1,0 @@
-# build/action.yml
-name: "Install pip dependencies"
-description: "Install Python dependencies"
-runs:
-  using: "composite"
-  steps:
-    - name: Dummy pip install step
-      run: echo "Would install pip deps if requirements.txt existed"
-      shell: cmd

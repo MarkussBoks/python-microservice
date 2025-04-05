@@ -9,10 +9,21 @@ jobs:
   install-pip-deps:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/install-deps
+      - name: Prepare all required actions
+        uses: actions/checkout@v4
+
+      - name: Clone python-greetings repo
+        uses: actions/checkout@v4
         with:
-          working-dir: .
+          repository: mtararujs/python-greetings
+          path: greetings
+
+      - name: Install Python dependencies
+        uses: ./.github/actions/install-deps
+        with:
+          working-directory: greetings
+
+
 
   deploy-to-dev:
     runs-on: self-hosted
