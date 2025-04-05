@@ -10,7 +10,9 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/build
+      - uses: ./.github/actions/install-deps
+        with:
+          working-dir: .
 
   deploy-to-dev:
     runs-on: self-hosted
@@ -19,7 +21,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy
         with:
-          environment: "DEV"
+          working-dir: .
+          env-name: dev
+          port: 7001
 
   tests-on-dev:
     runs-on: self-hosted
@@ -28,7 +32,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
         with:
-          environment: "DEV"
+          working-dir: .
+          test-env: greetings_dev
 
   deploy-to-staging:
     runs-on: self-hosted
@@ -37,7 +42,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy
         with:
-          environment: "STAGING"
+          working-dir: .
+          env-name: staging
+          port: 7002
 
   tests-on-staging:
     runs-on: self-hosted
@@ -46,7 +53,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
         with:
-          environment: "STAGING"
+          working-dir: .
+          test-env: greetings_stg
 
   deploy-to-preprod:
     runs-on: self-hosted
@@ -55,7 +63,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy
         with:
-          environment: "PREPROD"
+          working-dir: .
+          env-name: preprod
+          port: 7003
 
   tests-on-preprod:
     runs-on: self-hosted
@@ -64,7 +74,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
         with:
-          environment: "PREPROD"
+          working-dir: .
+          test-env: greetings_preprod
 
   deploy-to-prod:
     runs-on: self-hosted
@@ -73,7 +84,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy
         with:
-          environment: "PROD"
+          working-dir: .
+          env-name: prod
+          port: 7004
 
   tests-on-prod:
     runs-on: self-hosted
@@ -82,4 +95,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
         with:
-          environment: "PROD"
+          working-dir: .
+          test-env: greetings_prod
