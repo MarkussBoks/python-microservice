@@ -1,91 +1,85 @@
-name: Python Greetings Workflow
+name: Python Microservice Delivery Pipeline
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
   install-pip-deps:
     runs-on: self-hosted
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Python dependencies
-        shell: cmd
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/install-pip-deps
 
   deploy-to-dev:
     runs-on: self-hosted
     needs: install-pip-deps
     steps:
-      - name: Deploy to DEV
-        shell: cmd
-        run: |
-          Write-Output "Deploying to DEV..."
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy
+        with:
+          environment: "DEV"
 
   tests-on-dev:
     runs-on: self-hosted
     needs: deploy-to-dev
     steps:
-      - name: Run tests on DEV
-        shell: cmd
-        run: |
-          pytest test_app.py
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test
+        with:
+          environment: "DEV"
 
   deploy-to-staging:
     runs-on: self-hosted
     needs: tests-on-dev
     steps:
-      - name: Deploy to STAGING
-        shell: cmd
-        run: |
-          Write-Output "Deploying to STAGING..."
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy
+        with:
+          environment: "STAGING"
 
   tests-on-staging:
     runs-on: self-hosted
     needs: deploy-to-staging
     steps:
-      - name: Run tests on STAGING
-        shell: cmd
-        run: |
-          pytest test_app.py
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test
+        with:
+          environment: "STAGING"
 
   deploy-to-preprod:
     runs-on: self-hosted
     needs: tests-on-staging
     steps:
-      - name: Deploy to PREPROD
-        shell: cmd
-        run: |
-          Write-Output "Deploying to PREPROD..."
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy
+        with:
+          environment: "PREPROD"
 
   tests-on-preprod:
     runs-on: self-hosted
     needs: deploy-to-preprod
     steps:
-      - name: Run tests on PREPROD
-        shell: cmd
-        run: |
-          pytest test_app.py
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test
+        with:
+          environment: "PREPROD"
 
   deploy-to-prod:
     runs-on: self-hosted
     needs: tests-on-preprod
     steps:
-      - name: Deploy to PROD
-        shell: cmd
-        run: |
-          Write-Output "Deploying to PROD..."
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy
+        with:
+          environment: "PROD"
 
   tests-on-prod:
     runs-on: self-hosted
     needs: deploy-to-prod
     steps:
-      - name: Run tests on PROD
-        shell: cmd
-        run: |
-          pytest test_app.py
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test
+        with:
+          environment: "PROD"
