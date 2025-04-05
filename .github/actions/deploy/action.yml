@@ -1,30 +1,32 @@
-name: "Deploy Python App"
-description: "Deploy app to environment with port"
+name: "Deploy App"
+description: "Deploy Python app with pm2"
 inputs:
   working-dir:
-    description: "Working directory"
+    description: "Project folder"
     required: true
   env-name:
-    description: "Environment name (dev, staging, preprod, prod)"
+    description: "Deployment environment (dev, staging, etc)"
     required: true
   port:
-    description: "Port number to run app on"
+    description: "Port to use"
     required: true
+
 runs:
   using: "composite"
   steps:
-    - name: Set working dir
+    - name: Change to working directory
       run: cd ${{ inputs.working-dir }}
       shell: cmd
 
-    - name: Set path for pm2
-      run: set PATH=%APPDATA%\npm;%PATH%
+    - name: Add pm2 to PATH
+      run: set PATH=C:\Users\marku\AppData\Roaming\npm;%PATH%
       shell: cmd
 
-    - name: Start app with PM2
+    - name: Echo deployment info
+      run: echo "Deploying to ${{ inputs.env-name }} on port ${{ inputs.port }}"
       shell: cmd
+
+    - name: Start app with pm2
+      run: pm2 start app.py --name greetings-app-${{ inputs.env-name }} --interpreter python -- --port ${{ inputs.port }}
       working-directory: ${{ inputs.working-dir }}
-      run: |
-        echo "Deploying to ${{ inputs.env-name }} on port ${{ inputs.port }}"
-        $env:PORT=${{ inputs.port }}
-        pm2 start app.py --name greetings-app-${{ inputs.env-name }} --interpreter python -- --port ${{ inputs.port }}
+      shell: cmd
