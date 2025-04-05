@@ -1,0 +1,13 @@
+name: "Pre Cleanup"
+description: "Clean PM2 and ensure no processes block port"
+runs:
+  using: "composite"
+  steps:
+    - name: Kill all PM2 processes
+      shell: cmd
+      run: |
+        if (Get-Command pm2 -ErrorAction SilentlyContinue) {
+          pm2 kill
+        } else {
+          Write-Host "PM2 not installed, skipping kill"
+        }

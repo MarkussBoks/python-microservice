@@ -1,15 +1,16 @@
-name: "Install pip dependencies"
-description: "Install Python dependencies from requirements.txt"
-
+name: "Install Python dependencies"
+description: "Installs Python packages from requirements.txt"
 inputs:
-  working-directory:
-    description: "Directory containing requirements.txt"
+  working-dir:
+    description: "Working directory with requirements.txt"
     required: true
-
 runs:
   using: "composite"
   steps:
+    - name: Set working directory
+      run: cd ${{ inputs.working-dir }}
+      shell: cmd
+
     - name: Install dependencies
-      working-directory: ${{ inputs.working-directory }}
       run: pip install -r requirements.txt
       shell: cmd

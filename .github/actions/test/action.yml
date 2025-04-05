@@ -1,18 +1,28 @@
 name: "Test Python App"
-description: "Run tests for the Python app"
+description: "Run tests on specified environment"
 inputs:
   working-dir:
-    description: "Path to test framework"
+    description: "Working directory for test framework"
     required: true
   test-env:
-    description: "Test environment config (e.g. greetings_dev)"
+    description: "Test environment identifier"
     required: true
 runs:
   using: "composite"
   steps:
-    - name: Run tests using pytest
+    - name: Set path for pm2
+      run: set PATH=%APPDATA%\npm;%PATH%
       shell: cmd
+
+    - name: Restart PM2 before test
+      shell: cmd
+      working-directory: ${{ inputs.working-dir }}
       run: |
-        cd ${{ inputs.working-dir }}
-        echo "Running tests for ${{ inputs.test-env }}"
-        pytest --maxfail=1 --disable-warnings --tb=short
+        echo "Restarting test app for ${{ inputs.test-env }}"
+        pm2 restart all
+        
+
+    - name: Run tests
+      shell: cmd
+      working-directory: ${{ inputs.working-dir }}
+      run: pytest
