@@ -1,0 +1,14 @@
+name: "Install Python dependencies"
+description: "Install Python dependencies"
+inputs:
+  working-dir:
+    description: "Path to Python app"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      shell: cmd
+      run: |
+        cd ${{ inputs.working-dir }}
+        pip install -r requirements.txt
