@@ -1,12 +1,9 @@
-name: "Test Python App"
-description: "Run tests for the Python app on specified environment"
-inputs:
-  environment:
-    description: 'Environment to test'
-    required: true
+# build/action.yml
+name: "Install pip dependencies"
+description: "Install Python dependencies"
 runs:
   using: "composite"
   steps:
-    - name: Run tests
-      run: echo "Running tests for ${{ inputs.environment }}"
+    - name: Dummy pip install step
+      run: echo "Would install pip deps if requirements.txt existed"
       shell: cmd
