@@ -20,8 +20,8 @@ runs:
 
     - name: Deploy with PM2
       run: |
-        set PATH=C:\Users\marku\AppData\Roaming\npm;%PATH%
         echo Deploying to ${{ inputs.env-name }} on port ${{ inputs.port }}
-        pm2 start app.py --name greetings-app-${{ inputs.env-name }} --interpreter python -- --port ${{ inputs.port }}
+        "C:\Users\marku\AppData\Roaming\npm\pm2.cmd" start app.py --name greetings-app-${{ inputs.env-name }} --interpreter python -- --port ${{ inputs.port }}
       working-directory: ${{ inputs.working-dir }}
       shell: cmd
+
