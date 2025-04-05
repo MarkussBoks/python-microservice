@@ -24,7 +24,7 @@ jobs:
       - name: Install Python dependencies
         uses: ./.github/actions/install-deps
         with:
-          working-directory: greetings
+          working-dir: greetings
 
   deploy-to-dev:
     runs-on: self-hosted
