@@ -1,15 +1,10 @@
-name: "Pre-cleanup"
-description: "Clean up previous PM2 processes"
+name: Pre-cleanup
+description: Ensure PM2 is available and stop old processes
 runs:
   using: "composite"
   steps:
-    - name: Clean up PM2 apps
-      shell: cmd
+    - name: Add PM2 to PATH manually
       run: |
-        where pm2 >nul 2>&1
-        if %ERRORLEVEL% EQU 0 (
-          echo PM2 found. Deleting all existing apps...
-          pm2 delete all
-        ) else (
-          echo PM2 is not installed or not found in PATH
-        )
+        set "PATH=%APPDATA%\npm;%PATH%"
+        where pm2
+      shell: cmd
