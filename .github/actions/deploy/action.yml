@@ -13,10 +13,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Start Python app with PM2
+    - name: Deploy app with PM2
       shell: cmd
       run: |
-        cd ${{ inputs.working-dir }}
-        echo "Deploying to ${{ inputs.env-name }} on port ${{ inputs.port }}"
-        $env:PORT="${{ inputs.port }}"
-        pm2 start app.py --name "greetings-app-${{ inputs.env-name }}" --interpreter python --watch
+        set PATH=%APPDATA%\npm;%PATH%
+        echo Deploying to ${{ inputs.environment }} on port ${{ inputs.port }}
+        pm2 start app.py --name greetings-app-${{ inputs.environment }} --interpreter python -- --port ${{ inputs.port }}
