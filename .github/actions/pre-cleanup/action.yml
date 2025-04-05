@@ -1,13 +1,15 @@
-name: "Pre Cleanup"
-description: "Clean PM2 and ensure no processes block port"
+name: "Pre-cleanup"
+description: "Clean up previous PM2 processes"
 runs:
   using: "composite"
   steps:
-    - name: Kill all PM2 processes
+    - name: Clean up PM2 apps
       shell: cmd
       run: |
-        if (Get-Command pm2 -ErrorAction SilentlyContinue) {
-          pm2 kill
-        } else {
-          Write-Host "PM2 not installed, skipping kill"
-        }
+        where pm2 >nul 2>&1
+        if %ERRORLEVEL% EQU 0 (
+          echo PM2 found. Deleting all existing apps...
+          pm2 delete all
+        ) else (
+          echo PM2 is not installed or not found in PATH
+        )
